@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delivery Zona Volcanes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --card: #1a1a26;
+      --orange: #ff6b1a;
+      --red: #ff2d55;
+      --yellow: #ffcc00;
+      --pink: #ff3fa4;
+      --text: #f0f0f5;
+      --muted: #888899;
+      --border: rgba(255,107,26,0.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ——— BG noise + mesh ——— */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% -10%, rgba(255,107,26,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 85% 110%, rgba(255,45,85,.14) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255,204,0,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ——— NAVBAR ——— */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(10,10,15,.7);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem; font-weight: 800;
+      background: linear-gradient(90deg, var(--orange), var(--red));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -.5px;
+    }
+    .nav-badge {
+      font-size: .72rem; font-weight: 600; letter-spacing: .08em;
+      color: var(--orange); border: 1px solid rgba(255,107,26,.4);
+      padding: .25rem .7rem; border-radius: 99px;
+      text-transform: uppercase;
+    }
+
+    /* ——— HERO ——— */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 6rem 1.5rem 4rem;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .78rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--orange);
+      background: rgba(255,107,26,.1); border: 1px solid rgba(255,107,26,.3);
+      padding: .35rem .9rem; border-radius: 99px;
+      margin-bottom: 1.6rem;
+      animation: fadeUp .7s ease both;
+    }
+    .eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); display: block; }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      font-weight: 800; line-height: 1;
+      letter-spacing: -2px;
+      animation: fadeUp .8s .1s ease both;
+    }
+    h1 .line2 {
+      display: block;
+      background: linear-gradient(100deg, var(--orange) 0%, var(--red) 50%, var(--pink) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      margin-top: 1.4rem;
+      max-width: 520px;
+      font-size: 1.05rem; color: var(--muted); line-height: 1.65;
+      animation: fadeUp .8s .2s ease both;
+    }
+
+    /* ——— DOWNLOAD CARDS ——— */
+    .cards-section {
+      position: relative; z-index: 1;
+      padding: 0 1.5rem 5rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .section-label {
+      font-size: .78rem; font-weight: 600; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 2.2rem;
+      animation: fadeUp .8s .3s ease both;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.4rem;
+      width: 100%; max-width: 720px;
+      animation: fadeUp .8s .4s ease both;
+    }
+
+    .dual-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: .68rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, var(--orange), var(--yellow));
+      color: #000; padding: .25rem .65rem; border-radius: 99px;
+    }
+
+    .card {
+      position: relative;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 20px;
+      padding: 2rem 1.8rem;
+      display: flex; flex-direction: column; gap: 1.2rem;
+      overflow: hidden;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,107,26,.5);
+      box-shadow: 0 20px 50px rgba(255,107,26,.12);
+    }
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      border-radius: 2px 2px 0 0;
+    }
+    .card.cliente::before { background: linear-gradient(90deg, var(--orange), var(--yellow)); }
+    .card.repartidor::before { background: linear-gradient(90deg, var(--red), var(--pink)); }
+
+    .card-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+    }
+    .card.cliente .card-icon { background: rgba(255,107,26,.15); }
+    .card.repartidor .card-icon { background: rgba(255,45,85,.15); }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.35rem; font-weight: 800; letter-spacing: -.5px;
+    }
+    .card-desc {
+      font-size: .88rem; color: var(--muted); line-height: 1.6;
+    }
+    .card-meta {
+      display: flex; gap: .6rem; flex-wrap: wrap;
+      margin-top: .3rem;
+    }
+    .tag {
+      font-size: .7rem; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; padding: .25rem .65rem;
+      border-radius: 99px; border: 1px solid;
+    }
+    .card.cliente .tag { color: var(--orange); border-color: rgba(255,107,26,.35); }
+    .card.repartidor .tag { color: var(--red); border-color: rgba(255,45,85,.35); }
+
+    .btn-download {
+      display: flex; align-items: center; justify-content: center; gap: .6rem;
+      padding: .85rem 1.4rem; border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+      transition: filter .2s, transform .15s, opacity .2s;
+      border: none;
+    }
+    .btn-download:active { transform: scale(.97); }
+    .btn-download svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .card.cliente .btn-download {
+      background: linear-gradient(120deg, var(--orange), var(--yellow));
+      color: #000;
+    }
+    .card.repartidor .btn-download {
+      background: linear-gradient(120deg, var(--red), var(--pink));
+      color: #fff;
+    }
+    .btn-download:hover { filter: brightness(1.12); }
+
+    /* placeholder APK link state */
+    .btn-download.placeholder {
+      opacity: .5; pointer-events: none;
+    }
+
+    /* ——— SCREENSHOTS ——— */
+    .screenshots-section {
+      position: relative; z-index: 1;
+      padding: 3rem 1.5rem 6rem;
+      text-align: center;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800; letter-spacing: -.5px;
+      margin-bottom: .6rem;
+    }
+    .section-title span {
+      background: linear-gradient(90deg, var(--orange), var(--red));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .section-sub { font-size: .9rem; color: var(--muted); margin-bottom: 3rem; }
+
+    .phones-row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .phone-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: .9rem;
+    }
+    .phone-wrap .phone-label {
+      font-size: .75rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    .phone-mockup {
+      width: 160px; height: 300px;
+      background: var(--surface);
+      border-radius: 28px;
+      border: 2px solid rgba(255,255,255,.1);
+      overflow: hidden;
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: .8rem;
+      transition: transform .3s;
+      box-shadow: 0 30px 60px rgba(0,0,0,.5);
+    }
+    .phone-mockup:hover { transform: scale(1.04) translateY(-6px); }
+    .phone-mockup::after {
+      content: '';
+      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      width: 50px; height: 5px; border-radius: 99px;
+      background: rgba(255,255,255,.15);
+    }
+    .phone-mockup img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+    .phone-placeholder {
+      display: flex; flex-direction: column; align-items: center; gap: .6rem;
+      padding: 1rem;
+    }
+    .phone-placeholder .ph-icon { font-size: 2rem; opacity: .4; }
+    .phone-placeholder p {
+      font-size: .7rem; color: var(--muted);
+      text-align: center; line-height: 1.5; opacity: .7;
+    }
+
+    .phone-mockup.featured {
+      width: 185px; height: 345px;
+    }
+
+    /* gradient accents on phones */
+    .phone-mockup.c1 { border-color: rgba(255,107,26,.4); }
+    .phone-mockup.c2 { border-color: rgba(255,45,85,.4); }
+    .phone-mockup.c3 { border-color: rgba(255,204,0,.3); }
+
+    /* ——— FOOTER ——— */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 2rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer .f-logo {
+      font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 800;
+      background: linear-gradient(90deg, var(--orange), var(--red));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    footer p { font-size: .8rem; color: var(--muted); }
+
+    /* ——— DIVIDER ——— */
+    .divider {
+      width: 100%; max-width: 680px; margin: 0 auto 4rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,107,26,.3), transparent);
+    }
+
+    /* ——— ANIMATIONS ——— */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { opacity: .6; }
+      50% { opacity: 1; }
+    }
+    .glow-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--orange);
+      animation: pulse-glow 1.8s ease-in-out infinite;
+      display: inline-block; margin-right: .4rem;
+    }
+
+    /* ——— RESPONSIVE ——— */
+    @media (max-width: 500px) {
+      nav { padding: 1rem 1.2rem; }
+      .hero { padding: 5rem 1.2rem 3rem; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">🌋 Zona Volcanes</div>
+    <div class="nav-badge"><span class="glow-dot"></span>Disponible</div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow"><span></span> Delivery App · Zona Volcanes</div>
+    <h1>
+      Descarga<br>
+      <span class="line2">Zona Volcanes</span>
+    </h1>
+    <p class="hero-sub">
+      Tu plataforma de delivery lista para usarse. Elige tu versión, descárgala e instálala directo en tu dispositivo Android.
+    </p>
+  </section>
+
+  <!-- DOWNLOAD CARDS -->
+  <section class="cards-section">
+    <p class="section-label">— Elige tu versión —</p>
+    <div class="cards">
+
+      <!-- CARD CLIENTE + NEGOCIOS -->
+      <div class="card cliente">
+        <div class="dual-badge">2 en 1</div>
+        <div class="card-icon">🛍️</div>
+        <div>
+          <div class="card-title">App Cliente &amp; Negocios</div>
+          <div class="card-desc">Una sola APK con dos modos: entra como <strong style="color:var(--orange)">cliente</strong> para pedir, o como <strong style="color:var(--yellow)">negocio</strong> para gestionar tu menú y pedidos.</div>
+        </div>
+        <div class="card-meta">
+          <span class="tag">Android</span>
+          <span class="tag">v1.0</span>
+          <span class="tag">Dual</span>
+        </div>
+        <!-- Reemplaza href="#" con tu link real de APK -->
+        <a href="https://drive.google.com/uc?export=download&id=16OzItj1HetnJiPgffeOnX4lqm3sbBJUA" class="btn-download" id="btn-cliente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 15V3m0 12-4-4m4 4 4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17"/>
+          </svg>
+          Descargar APK Cliente &amp; Negocios
+        </a>
+      </div>
+
+      <!-- CARD REPARTIDOR -->
+      <div class="card repartidor">
+        <div class="card-icon">🛵</div>
+        <div>
+          <div class="card-title">App Repartidor</div>
+          <div class="card-desc">Para los repartidores que gestionan pedidos, rutas y entregas desde su teléfono.</div>
+        </div>
+        <div class="card-meta">
+          <span class="tag">Android</span>
+          <span class="tag">v1.0</span>
+        </div>
+        <!-- Reemplaza href="#" con tu link real de APK -->
+        <a href="https://drive.google.com/uc?export=download&id=1ODPycFRTJpqEJHeUmtPt_FmoJHneP5P9" class="btn-download" id="btn-repartidor">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 15V3m0 12-4-4m4 4 4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17"/>
+          </svg>
+          Descargar APK Repartidor
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DIVIDER -->
+  <div class="divider"></div>
+
+  <!-- SCREENSHOTS -->
+  <section class="screenshots-section">
+    <h2 class="section-title">Así se ve la <span>app</span></h2>
+    <p class="section-sub">Capturas de pantalla de la aplicación</p>
+
+    <div class="phones-row">
+
+      <div class="phone-wrap" style="animation: fadeUp .8s .5s ease both; opacity:0; animation-fill-mode:forwards;">
+        <div class="phone-mockup c1">
+          <img src="screenshot3.png" alt="DZV App"/>
+        </div>
+        <span class="phone-label">Clientes &amp; Negocios</span>
+      </div>
+
+      <div class="phone-wrap" style="animation: fadeUp .8s .35s ease both; opacity:0; animation-fill-mode:forwards;">
+        <div class="phone-mockup c2 featured">
+          <img src="screenshot1.png" alt="DZV App Principal"/>
+        </div>
+        <span class="phone-label">Todo en una App</span>
+      </div>
+
+      <div class="phone-wrap" style="animation: fadeUp .8s .55s ease both; opacity:0; animation-fill-mode:forwards;">
+        <div class="phone-mockup c3">
+          <img src="screenshot2.png" alt="DZV Repartidores"/>
+        </div>
+        <span class="phone-label">Repartidores</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="f-logo">🌋 Delivery Zona Volcanes</div>
+    <p>Proyecto académico · 2025</p>
+  </footer>
+
+  <script>
+    // Activa los botones cuando pegues los links reales
+    // Ejemplo de uso:
+    // document.getElementById('btn-cliente').href = 'https://tulink.com/cliente.apk';
+    // document.getElementById('btn-cliente').classList.remove('placeholder');
+    //
+    // document.getElementById('btn-repartidor').href = 'https://tulink.com/repartidor.apk';
+    // document.getElementById('btn-repartidor').classList.remove('placeholder');
+  </script>
+
+</body>
+</html>
